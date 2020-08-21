@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Humanizer.Core" Version="2.8.26" />
+    <PackageReference Include="Quartz" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Coramba.Common\Coramba.Common.csproj" />
+    <ProjectReference Include="..\Coramba.DependencyInjection\Coramba.DependencyInjection.csproj" />
+  </ItemGroup>
+
+</Project>
