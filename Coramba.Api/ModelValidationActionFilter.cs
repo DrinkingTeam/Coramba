@@ -67,7 +67,8 @@ namespace Coramba.Api
                     continue;
 
                 // validate
-                var result = await validator.ValidateAsync(value);
+                var result = await validator.ValidateAsync(
+                    (IValidationContext)Activator.CreateInstance(typeof(ValidationContext<>).MakeGenericType(value.GetType()), value));
 
                 result.AddToModelState(context.ModelState, key);
             }

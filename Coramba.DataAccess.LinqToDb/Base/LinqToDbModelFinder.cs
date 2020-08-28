@@ -6,42 +6,37 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Coramba.Common.Reflection;
 using Coramba.DataAccess.Base;
-using Coramba.DataAccess.Ef.DbContexts;
-using Microsoft.EntityFrameworkCore;
+using Coramba.DataAccess.LinqToDb.DataConnections;
+using LinqToDB.Data;
 
-namespace Coramba.DataAccess.Ef.Base
+namespace Coramba.DataAccess.LinqToDb.Base
 {
-    public class EfModelFinder<TDbContext, TModel> : IModelFinder<TModel>
-        where TDbContext: DbContext
+    public class LinqToDbModelFinder<TDataConnection, TModel> : IModelFinder<TModel>
+        where TDataConnection: DataConnection
         where TModel : class
     {
-        public IDbContextGetter<TDbContext> DbContextGetter { get; }
+        public IDataConnectionGetter<TDataConnection> DbContextGetter { get; }
 
-        public EfModelFinder(IDbContextGetter<TDbContext> dbContextGetter)
+        public LinqToDbModelFinder(IDataConnectionGetter<TDataConnection> dbContextGetter)
         {
             DbContextGetter = dbContextGetter ?? throw new ArgumentNullException(nameof(dbContextGetter));
         }
 
         private IEnumerable<(PropertyInfo Property, object Id)> GetPrimaryKey(object id)
         {
-            var entityType = DbContextGetter.Get().Model.FindEntityType(typeof(TModel));
-            if (entityType == null)
-                throw new Exception($"Type {typeof(TModel)} not in DbContext");
-            var primaryKey = entityType.FindPrimaryKey();
-            if (entityType == null)
-                throw new Exception($"Type {typeof(TModel)} doesn't contain a primary key");
+            var primaryKeys = DbContextGetter.Get().GetPkProperties(typeof(TModel));
 
-            if (primaryKey.Properties.Count == 0)
+            if (primaryKeys.Length == 0)
                 throw new NotSupportedException($"Type {typeof(TModel)} doesn't contain primary key");
 
-            if (primaryKey.Properties.Count > 1)
+            if (primaryKeys.Length > 1)
                 throw new NotSupportedException($"Type {typeof(TModel)} contains composite primary key");
 
-            var keyProperty = primaryKey.Properties.Single();
-            var memberInfo = typeof(TModel).GetPropertyCached(keyProperty.Name);
+            var keyProperty = primaryKeys.Single();
+            var memberInfo = keyProperty.MemberInfo;
 
             if (memberInfo == null)
-                throw new Exception($"Key member {keyProperty.Name} for {typeof(TModel)} is not found");
+                throw new Exception($"Key member {keyProperty.ColumnName} for {typeof(TModel)} is not found");
 
             if (memberInfo.GetReturnType() != id.GetType())
                 throw new Exception($"{id.GetType()} is not a valid type for primary key of {typeof(TModel)}, excepted {memberInfo.GetReturnType()}");
