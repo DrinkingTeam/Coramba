@@ -39,9 +39,9 @@ namespace Coramba.Common.Reflection
         public static Expression<Action<T, object>> GetSetterExpression<T>(this MemberInfo memberInfo)
         {
             var targetType = memberInfo.DeclaringType;
-            var exInstance = Expression.Parameter(targetType, "t");
+            var exInstance = Expression.Parameter(typeof(T), "t");
 
-            var exMemberAccess = Expression.MakeMemberAccess(exInstance, memberInfo);
+            var exMemberAccess = Expression.MakeMemberAccess(Expression.Convert(exInstance, targetType), memberInfo);
 
             // t.PropertValue(Convert(p))
             var exValue = Expression.Parameter(typeof(object), "p");

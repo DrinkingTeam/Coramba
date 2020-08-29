@@ -38,12 +38,15 @@ namespace Coramba.Services.Crud
         protected virtual Task InsertCoreAsync(TModel model, TModelDto modelDto)
             => Repository.InsertAsync(model);
 
+        protected virtual Task<TModel> GetInsertModelAsync(TModelDto modelDto, TModel model)
+            => DtoToModelConverter.ConvertAsync(modelDto, model);
+
         public async Task<TModelDto> InsertAsync(TModelDto modelDto)
         {
             if (!await ValidateDtoAsync(modelDto, true))
                 return default;
 
-            var model = await DtoToModelConverter.ConvertAsync(modelDto, await Repository.NewAsync());
+            var model = await GetInsertModelAsync(modelDto, await Repository.NewAsync());
 
             await InsertCoreAsync(model, modelDto);
 
@@ -63,6 +66,9 @@ namespace Coramba.Services.Crud
             return (await queryable.EnumerateAsync(QueryableEnumerator)).FirstOrDefault();
         }
 
+        protected virtual async Task<TModel> GetUpdateModelAsync(TModelDto modelDto, TModel model)
+            => await DtoToModelConverter.Convert(modelDto).ToAsync(model);
+
         public async Task<TModelDto> UpdateAsync(TModelDto modelDto)
         {
             if (!await ValidateDtoAsync(modelDto, false))
@@ -74,7 +80,7 @@ namespace Coramba.Services.Crud
             if (model == null)
                 return default;
 
-            model = await DtoToModelConverter.Convert(modelDto).ToAsync(model);
+            model = await GetUpdateModelAsync(modelDto, model);
 
             await UpdateCoreAsync(model, modelDto);
 
