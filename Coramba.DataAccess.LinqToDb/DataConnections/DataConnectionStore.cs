@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Coramba.Common;
 using LinqToDB.Data;
 using Microsoft.Extensions.Logging;
@@ -77,6 +78,36 @@ namespace Coramba.DataAccess.LinqToDb.DataConnections
             DataConnections.Remove(name);
             if (_currentName == name)
                 _currentName = null;
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            _dataConnections?.ForEach(x => x.Value?.Dispose());
+            _dataConnections = null;
+        }
+
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
+        }
+
+        ~DataConnectionStore()
+        {
+            ReleaseUnmanagedResources();
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (_dataConnections != null)
+            {
+                await _dataConnections.ForEachAsync(async x =>
+                {
+                    if (x.Value != null)
+                        await x.Value.DisposeAsync();
+                });
+                _dataConnections = null;
+            }
         }
     }
 }

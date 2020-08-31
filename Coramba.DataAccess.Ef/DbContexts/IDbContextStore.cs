@@ -1,6 +1,8 @@
-﻿namespace Coramba.DataAccess.Ef.DbContexts
+﻿using System;
+
+namespace Coramba.DataAccess.Ef.DbContexts
 {
-    public interface IDbContextStore<TDbContext>
+    public interface IDbContextStore<TDbContext>: IDisposable, IAsyncDisposable
     {
         TDbContext Get(string name);
         string GetCurrent();

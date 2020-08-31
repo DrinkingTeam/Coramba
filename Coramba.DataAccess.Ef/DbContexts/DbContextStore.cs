@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Coramba.Common;
 using Microsoft.Extensions.Logging;
 
@@ -76,6 +77,36 @@ namespace Coramba.DataAccess.Ef.DbContexts
             DbContexts.Remove(name);
             if (_currentName == name)
                 _currentName = null;
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            _dbContexts?.ForEach(x => x.Value?.Dispose());
+            _dbContexts = null;
+        }
+
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
+        }
+
+        ~DbContextStore()
+        {
+            ReleaseUnmanagedResources();
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (_dbContexts != null)
+            {
+                await _dbContexts.ForEachAsync(async x =>
+                {
+                    if (x.Value != null)
+                        await x.Value.DisposeAsync();
+                });
+                _dbContexts = null;
+            }
         }
     }
 }

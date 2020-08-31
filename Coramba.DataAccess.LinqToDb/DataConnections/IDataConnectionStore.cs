@@ -1,8 +1,9 @@
-﻿using LinqToDB.Data;
+﻿using System;
+using LinqToDB.Data;
 
 namespace Coramba.DataAccess.LinqToDb.DataConnections
 {
-    public interface IDataConnectionStore<TDataConnection>
+    public interface IDataConnectionStore<TDataConnection>: IAsyncDisposable, IDisposable
         where TDataConnection : DataConnection
     {
         TDataConnection Get(string name);
