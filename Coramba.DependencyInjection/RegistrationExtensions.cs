@@ -156,7 +156,7 @@ namespace Coramba.DependencyInjection
                 {
                     var st = t.GetInterfaces().Where(i => serviceTypes.Contains(i)).Take(2).ToArray();
                     if (st.Length > 1)
-                        throw new Exception($"Service type {t} should have only on implementation");
+                        throw new Exception($"Service type {t} should have only one implementation");
 
                     return new
                     {
