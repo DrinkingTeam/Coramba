@@ -56,8 +56,8 @@ namespace Coramba.DataAccess.Ef
             if (dbContextType != null)
             {
                 services.TryAddScoped(
-                    typeof(IModelFinder<>).MakeGenericType(entityType),
-                    typeof(EfModelFinder<,>).MakeGenericType(dbContextType, entityType));
+                    typeof(IPrimaryKeyGetter<>).MakeGenericType(entityType),
+                    typeof(EfPrimaryKeyGetter<,>).MakeGenericType(dbContextType, entityType));
             }
 
             services.AddScoped(typeof(IRepositoryConvention<>).MakeGenericType(entityType),

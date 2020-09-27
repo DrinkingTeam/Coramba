@@ -1,6 +1,12 @@
-﻿using Coramba.DependencyInjection;
+﻿using System.Linq;
+using Coramba.Common;
+using Coramba.Common.Reflection;
+using Coramba.Core.Converters;
+using Coramba.DataAccess.Queries.Universal;
+using Coramba.DependencyInjection;
 using Coramba.DependencyInjection.Modules;
 using Coramba.Services.Crud;
+using Coramba.Services.Filter;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Coramba.Services.Registration
@@ -40,6 +46,10 @@ namespace Coramba.Services.Registration
             where TService : ISelectOneModelService<TModelDto>
             => WithComponent(c => c.SelectOneModelServiceType = typeof(TService));
 
+        public TModule SelectModelService<TService, TFilterDto>()
+            where TService : ISelectModelService<TModelDto, TFilterDto>
+            => WithComponent(c => c.SelectModelServiceTypes[typeof(TFilterDto)] = typeof(TService));
+
         protected override void Register()
         {
             Services.AddFromAnnotations(typeof(TModelDto));
@@ -58,6 +68,20 @@ namespace Coramba.Services.Registration
 
             if (Component.SelectOneModelServiceType != null)
                 Services.AddScoped(typeof(ISelectOneModelService<TModelDto>), Component.SelectOneModelServiceType);
+
+            Component
+                .SelectModelServiceTypes
+                .ForEach(p =>
+                {
+                    Services.AddScoped(typeof(ISelectModelService<,>).MakeGenericType(typeof(TModelDto), p.Key), p.Value);
+                    var filterImplementationType = p.Key.GetImplementationType(typeof(FilterDto<>));
+                    if (filterImplementationType != null)
+                    {
+                        var idType = filterImplementationType.GetGenericArguments().Single();
+                        Services.AddScoped(typeof(IObjectConverter<,>).MakeGenericType(p.Key, typeof(UniversalFilter)),
+                            typeof(UniversalFilterConverter<,>).MakeGenericType(p.Key, idType));
+                    }
+                });
         }
     }
 }

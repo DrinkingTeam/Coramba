@@ -51,8 +51,8 @@ namespace Coramba.DataAccess.LinqToDb
             if (dbContextType != null)
             {
                 services.TryAddScoped(
-                    typeof(IModelFinder<>).MakeGenericType(entityType),
-                    typeof(LinqToDbModelFinder<,>).MakeGenericType(dbContextType, entityType));
+                    typeof(IPrimaryKeyGetter<>).MakeGenericType(entityType),
+                    typeof(LinqToDbPrimaryKeyGetter<,>).MakeGenericType(dbContextType, entityType));
             }
 
             services.TryAddScoped(typeof(IQueryableEnumerator<>).MakeGenericType(entityType),

@@ -1,4 +1,6 @@
-﻿using Coramba.Services.Crud;
+﻿using Coramba.DataAccess.Queries.Universal;
+using Coramba.Services.Crud;
+using Coramba.Services.Filter;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Coramba.Services.Registration
@@ -12,6 +14,12 @@ namespace Coramba.Services.Registration
                 .SelectOneModelService<TService>()
                 .WithComponent(c => c.ModelSelectorServiceType = typeof(TService));
 
+        public TModule SelectModelServiceFilter<TFilter, TFilterDto>()
+            => SelectModelService<SelectModelService<TModel, TModelDto, TFilter, TFilterDto>, TFilterDto>();
+
+        public TModule SelectModelServiceFilter<TFilterDto>()
+            => SelectModelServiceFilter<UniversalFilter, TFilterDto>();
+
         protected override void Register()
         {
             Component.InsertModelServiceType ??= typeof(CudModelService<TModel, TModelDto, TId>);
@@ -20,6 +28,7 @@ namespace Coramba.Services.Registration
             Component.SelectOneModelServiceType ??= typeof(ModelSelector<TModel, TModelDto>);
             Component.SelectAllModelServiceType ??= typeof(ModelSelector<TModel, TModelDto>);
             Component.ModelSelectorServiceType ??= typeof(ModelSelector<TModel, TModelDto>);
+            Component.SelectModelServiceTypes.TryAdd(typeof(FilterDto<TId>), typeof(SelectModelService<TModel, TModelDto, UniversalFilter, FilterDto<TId>>));
 
             base.Register();
 

@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Coramba.Common\Coramba.Common.csproj" />
     <ProjectReference Include="..\Coramba.Core\Coramba.Core.csproj" />
     <ProjectReference Include="..\Coramba.DependencyInjection\Coramba.DependencyInjection.csproj" />

@@ -7,6 +7,8 @@ using Coramba.Core.Converters;
 using Coramba.DataAccess.Annotations;
 using Coramba.DataAccess.Common;
 using Coramba.DataAccess.Conventions;
+using Coramba.DataAccess.Queries;
+using Coramba.DataAccess.Queries.Universal;
 using Coramba.DataAccess.Repositories;
 using Coramba.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,6 +71,9 @@ namespace Coramba.DataAccess
             services.TryAddScoped(
                 typeof(IObjectConverter<,>).MakeGenericType(typeof(IQueryable<>).MakeGenericType(entityType), typeof(IEnumerable<>).MakeGenericType(entityType)),
                     typeof(QueryableToEnumerableConverter<>).MakeGenericType(entityType));
+
+            services.TryAddScoped(typeof(IQuery<,>).MakeGenericType(entityType, typeof(UniversalFilter)),
+                typeof(UniversalQuery<>).MakeGenericType(entityType));
 
             entityType
                 .GetImplementationTypes(typeof(IEntity<>))

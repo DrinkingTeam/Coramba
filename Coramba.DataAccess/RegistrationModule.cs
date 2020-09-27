@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Coramba.Common;
 using Coramba.Core.Converters;
+using Coramba.DataAccess.Base;
 using Coramba.DataAccess.Common;
 using Coramba.DataAccess.Conventions;
 using Coramba.DependencyInjection.Annotations;
@@ -56,6 +57,7 @@ namespace Coramba.DataAccess
             Services.TryAddScoped(typeof(IRepositoryConventions<>), typeof(RepositoryConventions<>));
             Services.TryAddScoped<IObjectConverterResolver, ObjectConverterResolver>();
             Services.TryAddScoped(typeof(IQueryTransformer<,>), typeof(QueryTransformer<,>));
+            Services.TryAddScoped(typeof(IModelFinder<>), typeof(ModelFinder<>));
         }
     }
 }

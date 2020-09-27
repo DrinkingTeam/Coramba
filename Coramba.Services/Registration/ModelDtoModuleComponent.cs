@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Coramba.Services.Registration
 {
@@ -9,6 +10,7 @@ namespace Coramba.Services.Registration
         public Type DeleteModelServiceType { get; set; }
         public Type SelectOneModelServiceType { get; set; }
         public Type SelectAllModelServiceType { get; set; }
+        public Dictionary<Type, Type> SelectModelServiceTypes { get; set; } = new Dictionary<Type, Type>();
         public Type ModelSelectorServiceType { get; set; }
         public Delegate IdGetter { get; set; }
     }
