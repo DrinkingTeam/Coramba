@@ -11,7 +11,6 @@ namespace Coramba.Api.Controllers
     {
         protected ApiBaseController(ApiBaseControllerContext context)
         {
-            
         }
     }
 }

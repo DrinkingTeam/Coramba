@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Coramba.DependencyInjection.Modules
 {

@@ -8,5 +8,6 @@ namespace Coramba.DataAccess.Queries.Universal
         public int? Offset { get; set; }
         public int? Limit { get; set; }
         public IUniversalFilterCondition Condition { get; set; }
+        public UniversalFilterOrderByItem[] OrderBy { get; set; }
     }
 }

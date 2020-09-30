@@ -48,13 +48,13 @@ namespace Coramba.DataAccess.Queries.Universal.Conditions
                     whereBuilder.Append(" <= ");
                     break;
                 case UniversalFilterSimpleConditionOperator.StartsWith:
-                    whereBuilder.Append(".StartsWith(");
+                    whereBuilder.Append(".ToLower().StartsWith(");
                     break;
                 case UniversalFilterSimpleConditionOperator.EndsWith:
-                    whereBuilder.Append(".EndsWith(");
+                    whereBuilder.Append(".ToLower().EndsWith(");
                     break;
                 case UniversalFilterSimpleConditionOperator.Contains:
-                    whereBuilder.Append(".Contains(");
+                    whereBuilder.Append(".ToLower().Contains(");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -34,6 +34,11 @@ namespace Coramba.DataAccess.Queries.Universal
             return queryable.Where(whereClause, ids);
         }
 
+        private IQueryable<T> OrderBy(IQueryable<T> queryable, UniversalFilterOrderByItem[] orderByItems)
+        {
+            return queryable.OrderBy(orderByItems.Select(x => $"{x.Column} {(x.IsAsc? "ASC" : "DESC")}").Flatten(", "));
+        }
+
         public Task<IQueryable<T>> QueryAsync(IQueryable<T> queryable, UniversalFilter filter)
         {
             if (filter.Ids != null && filter.Ids.Length > 0)
@@ -48,6 +53,12 @@ namespace Coramba.DataAccess.Queries.Universal
             var whereCondition = filter.Condition?.GetWhereClause(0);
             if (whereCondition != null)
                 queryable = queryable.Where(whereCondition.Text, whereCondition.Parameters.ToArray());
+
+            if (filter.OrderBy != null && filter.OrderBy.Any())
+                queryable = OrderBy(queryable, filter.OrderBy);
+
+            if (filter.Offset.HasValue && filter.Offset.Value > 0)
+                queryable = queryable.Skip(filter.Offset.Value - 1);
 
             return Task.FromResult(queryable);
         }

@@ -9,7 +9,8 @@ namespace Coramba.Services.Crud
         public MappingProfile()
         {
             CreateMap(typeof(FilterDto<>), typeof(UniversalFilter))
-                .ForMember(nameof(UniversalFilter.Condition), x => x.Ignore());
+                .ForMember(nameof(UniversalFilter.Condition), x => x.Ignore())
+                .ForMember(nameof(UniversalFilter.OrderBy), x => x.Ignore());
         }
     }
 }

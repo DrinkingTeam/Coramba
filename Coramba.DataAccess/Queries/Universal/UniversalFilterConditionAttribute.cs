@@ -20,6 +20,7 @@ namespace Coramba.DataAccess.Queries.Universal
     /// </remarks>
     public class UniversalFilterConditionAttribute: Attribute
     {
-        public string ColumnName { get; set; }
+        public string Column { get; set; }
+        public bool AllowOrderBy { get; set; }
     }
 }

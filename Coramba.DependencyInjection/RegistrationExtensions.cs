@@ -64,11 +64,30 @@ namespace Coramba.DependencyInjection
 
         public static void AddAutoModules(this IServiceCollection services, params Assembly[] assemblies)
         {
-            if (assemblies == null) throw new ArgumentNullException(nameof(assemblies));
-            if (assemblies.Length == 0)
-                throw new ArgumentException("Value cannot be an empty collection.", nameof(assemblies));
+            services.AddAutoModules(b => b.Assemblies(assemblies));
+        }
 
-            WithAutoModulesFromAssemblies(assemblies, t => services.AddModule(t, true));
+        public static void AddAutoModules(this IServiceCollection services, Func<AutoModuleBuilder, AutoModuleBuilder> builderFunc)
+        {
+            if (builderFunc == null) throw new ArgumentNullException(nameof(builderFunc));
+            var component = builderFunc(new AutoModuleBuilder())?.Component ?? new AutoModuleComponent();
+            if (component.Assemblies == null)
+                throw new Exception($"Assemblies are not set");
+
+            WithAutoModulesFromAssemblies(component.Assemblies, t =>
+            {
+                var module = services.Module(t);
+                var setupFunctions = component.Setup.GetValueOrDefault(t);
+
+                setupFunctions?.ForEach(s =>
+                {
+                    s(module);
+                });
+
+                AddModule(module, true);
+
+                services.AddModule(t, true);
+            });
         }
 
         #endregion
