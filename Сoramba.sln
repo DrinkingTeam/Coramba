@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coramba.Scheduler", "Coramb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coramba.Services", "Coramba.Services\Coramba.Services.csproj", "{BA7500E3-1084-435D-8D08-31691CE578EA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coramba.DataAccess.LinqToDb", "Coramba.DataAccess.LinqToDb\Coramba.DataAccess.LinqToDb.csproj", "{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,14 @@ Global
 		{BA7500E3-1084-435D-8D08-31691CE578EA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA7500E3-1084-435D-8D08-31691CE578EA}.Release|x64.ActiveCfg = Release|x64
 		{BA7500E3-1084-435D-8D08-31691CE578EA}.Release|x64.Build.0 = Release|x64
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Debug|x64.Build.0 = Debug|Any CPU
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Release|x64.ActiveCfg = Release|Any CPU
+		{DD53A55C-6C4F-4309-8C83-95DCCBABAD95}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
