@@ -10,6 +10,15 @@ deploy:
     - dotnet build -c Release
     - dotnet pack -c Release -p:Version=1.$CI_PIPELINE_IID.0.0
     - dotnet nuget add source "$CI_SERVER_URL/api/v4/projects/$CI_PROJECT_ID/packages/nuget/index.json" --name gitlab --username gitlab-ci-token --password $CI_JOB_TOKEN --store-password-in-clear-text
-    - dotnet nuget push "bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.Api/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.Common/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.Core/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DataAccess/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DataAccess.Ef/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DataAccess.Forge/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DataAccess.LinqToDb/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DataAccess.DependencyInjection/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DataAccess.Scheduler/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DataAccess.Services/bin/Release/*.nupkg" --source gitlab
   only:
     - master
