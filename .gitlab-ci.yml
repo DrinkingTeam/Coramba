@@ -17,8 +17,8 @@ deploy:
     - dotnet nuget push "Coramba.DataAccess.Ef/bin/Release/*.nupkg" --source gitlab
     - dotnet nuget push "Coramba.DataAccess.Forge/bin/Release/*.nupkg" --source gitlab
     - dotnet nuget push "Coramba.DataAccess.LinqToDb/bin/Release/*.nupkg" --source gitlab
-    - dotnet nuget push "Coramba.DataAccess.DependencyInjection/bin/Release/*.nupkg" --source gitlab
-    - dotnet nuget push "Coramba.DataAccess.Scheduler/bin/Release/*.nupkg" --source gitlab
-    - dotnet nuget push "Coramba.DataAccess.Services/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.DependencyInjection/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.Scheduler/bin/Release/*.nupkg" --source gitlab
+    - dotnet nuget push "Coramba.Services/bin/Release/*.nupkg" --source gitlab
   only:
     - master
